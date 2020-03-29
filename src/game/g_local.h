@@ -1521,6 +1521,9 @@ extern  vmCvar_t  g_maxGhosts;
 extern  vmCvar_t  g_specNoclip;
 extern  vmCvar_t  g_practise;
 
+extern  vmCvar_t  g_covidInfectionFactor;
+extern  vmCvar_t  g_covidSeverityFactor;
+
 void      trap_Printf( const char *fmt );
 void      trap_Error( const char *fmt );
 int       trap_Milliseconds( void );
