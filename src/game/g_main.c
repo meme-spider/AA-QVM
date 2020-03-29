@@ -250,6 +250,7 @@ vmCvar_t  g_tyrantNerf;
 
 vmCvar_t  g_covidInfectionFactor;
 vmCvar_t  g_covidSeverityFactor;
+vmCvar_t  g_covidDebug;
 
 static cvarTable_t   gameCvarTable[ ] =
 {
@@ -480,6 +481,7 @@ static cvarTable_t   gameCvarTable[ ] =
 
   { &g_covidInfectionFactor, "g_covidInfectionFactor", "1", CVAR_ARCHIVE, 0, qtrue },
   { &g_covidSeverityFactor, "g_covidSeverityFactor", "1", CVAR_ARCHIVE, 0, qtrue },
+  { &g_covidDebug, "g_covidDebug", "0", CVAR_ARCHIVE, 0, qtrue },
 };
 
 static int gameCvarTableSize = sizeof( gameCvarTable ) / sizeof( gameCvarTable[ 0 ] );
