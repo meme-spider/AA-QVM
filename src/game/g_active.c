@@ -967,6 +967,9 @@ void ClientTimerActions( gentity_t *ent, int msec )
         }
       }
     }
+
+    if ( client->man_bad > 0 )
+      client->man_bad--;
   }
 
   while( client->time10000 >= 10000 )

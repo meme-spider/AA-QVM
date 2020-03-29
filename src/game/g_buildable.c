@@ -482,7 +482,7 @@ static void G_CreepSlow( gentity_t *self )
     if( enemy->flags & FL_NOTARGET || g_practise.integer )
       continue;
 
-    if( enemy->client && enemy->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS &&
+    if( enemy->client && enemy->client->man_bad &&
         enemy->client->ps.groundEntityNum != ENTITYNUM_NONE &&
         G_Visible( self, enemy ) )
     {
@@ -669,7 +669,7 @@ void ASpawn_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
   if( attacker && attacker->client )
   {
-    if( attacker->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+    if( qfalse ) // attacker->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
     {
       if( self->s.modelindex == BA_A_OVERMIND )
         G_AddCreditToClient( attacker->client, OVERMIND_VALUE, qtrue );
@@ -684,7 +684,9 @@ void ASpawn_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
           attacker->client->pers.netname ) );
       G_LogOnlyPrintf("%s ^3DESTROYED^7 by teammate %s^7\n",
           BG_FindHumanNameForBuildable( self->s.modelindex ), 
-          attacker->client->pers.netname ); 
+          attacker->client->pers.netname );
+
+      attacker->client->man_bad += 15;
     }
     G_LogPrintf( "Decon: %i %i %i: %s^7 destroyed %s by %s\n",
       attacker->client->ps.clientNum, self->s.modelindex, mod,
@@ -725,8 +727,7 @@ void ASpawn_Think( gentity_t *self )
           G_Damage( self, NULL, NULL, NULL, NULL, 10000, 0, MOD_SUICIDE );
           return;
         }
-        else if( g_antiSpawnBlock.integer && ent->client && 
-                 ent->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+        else if( g_antiSpawnBlock.integer && ent->client )
         {
           //spawnblock protection
           if( self->spawnBlockTime && level.time - self->spawnBlockTime > 10000 )
@@ -777,7 +778,7 @@ void ASpawn_Pain( gentity_t *self, gentity_t *attacker, int damage )
   G_SetBuildableAnim( self, BANIM_PAIN1, qfalse );
 
   if ( self->s.modelindex == BA_A_OVERMIND && self->health > 0 &&
-       attacker && attacker->client && attacker->client->pers.teamSelection == PTE_ALIENS )
+       attacker && attacker->client )
     G_TeamCommand( PTE_ALIENS, va( "print \"Overmind ^3DAMAGED^7 by ^1TEAMMATE^7 %s^7\n\"",
                    attacker->client->pers.netname ));
 }
@@ -825,7 +826,7 @@ void AOvermind_Think( gentity_t *self )
       if( enemy->flags & FL_NOTARGET || g_practise.integer ) 
         continue;
 
-      if( enemy->client && enemy->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+      if( enemy->client && enemy->client->man_bad )
       {
         self->timestamp = level.time;
         G_SelectiveRadiusDamage( self->s.pos.trBase, self, self->splashDamage,
@@ -1040,7 +1041,7 @@ void AGeneric_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, i
   VectorCopy( self->s.angles, new->angles );
   VectorCopy( self->s.origin2, new->origin2 );
   VectorCopy( self->s.angles2, new->angles2 );
-  new->fate = ( attacker && attacker->client && attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS ) ? BF_TEAMKILLED : BF_DESTROYED;
+  new->fate = ( attacker && attacker->client ) ? BF_TEAMKILLED : BF_DESTROYED;
   new->next = NULL;
   G_LogBuild( new );
 
@@ -1060,7 +1061,7 @@ void AGeneric_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, i
 
   if( attacker && attacker->client )
   {
-    if( attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+    if ( qtrue ) //( attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
     {
       G_TeamCommand( PTE_ALIENS,
         va( "print \"%s ^3DESTROYED^7 by teammate %s^7\n\"",
@@ -1068,7 +1069,9 @@ void AGeneric_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, i
           attacker->client->pers.netname ) );
       G_LogOnlyPrintf("%s ^3DESTROYED^7 by teammate %s^7\n",
           BG_FindHumanNameForBuildable( self->s.modelindex ), 
-          attacker->client->pers.netname ); 
+          attacker->client->pers.netname );
+
+      attacker->client->man_bad += 15;
     }
     G_LogPrintf( "Decon: %i %i %i: %s^7 destroyed %s by %s\n",
       attacker->client->ps.clientNum, self->s.modelindex, mod,
@@ -1132,7 +1135,7 @@ void ABarricade_Touch( gentity_t *self, gentity_t *other, trace_t *trace )
   gclient_t *client = other->client;
   int client_z, min_z;
 
-  if( !client || client->pers.teamSelection != PTE_ALIENS )
+  if( !client || client->man_bad )
     return;
 
   // Client must be high enough to pass over. Note that STEPSIZE (18) is
@@ -1228,7 +1231,7 @@ void AAcidTube_Think( gentity_t *self )
       if( !G_Visible( self, enemy ) )
         continue;
 
-      if( enemy->client && enemy->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+      if( enemy->client && enemy->client->man_bad )
       {
         if( level.paused || enemy->client->pers.paused )
           continue;
@@ -1304,7 +1307,7 @@ void AHive_Think( gentity_t *self )
       if( !G_Visible( self, enemy ) )
         continue;
 
-      if( enemy->client && enemy->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+      if( enemy->client && enemy->client->man_bad )
       {
         if( level.paused || enemy->client->pers.paused )
           continue;
@@ -1531,7 +1534,7 @@ void AHovel_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
   VectorCopy( self->s.angles, new->angles );
   VectorCopy( self->s.origin2, new->origin2 );
   VectorCopy( self->s.angles2, new->angles2 );
-  new->fate = ( attacker && attacker->client && attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS ) ? BF_TEAMKILLED : BF_DESTROYED;
+  new->fate = ( attacker && attacker->client ) ? BF_TEAMKILLED : BF_DESTROYED;
   new->next = NULL;
   G_LogBuild( new );
 
@@ -1583,7 +1586,7 @@ void AHovel_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
   if( attacker && attacker->client )
   {
-    if( attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+    if( qfalse ) // attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
     {
       G_TeamCommand( PTE_ALIENS,
         va( "print \"%s ^3DESTROYED^7 by teammate %s^7\n\"",
@@ -1591,7 +1594,9 @@ void AHovel_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
           attacker->client->pers.netname ) );
       G_LogOnlyPrintf("%s ^3DESTROYED^7 by teammate %s^7\n",
           BG_FindHumanNameForBuildable( self->s.modelindex ), 
-          attacker->client->pers.netname ); 
+          attacker->client->pers.netname );
+
+      attacker->client->man_bad += 15; 
     }
     G_LogPrintf( "Decon: %i %i %i: %s^7 destroyed %s by %s\n",
       attacker->client->ps.clientNum, self->s.modelindex, mod,
@@ -1630,7 +1635,7 @@ void ABooster_Touch( gentity_t *self, gentity_t *other, trace_t *trace )
   if( !client )
     return;
 
-  if( client && client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+  if( client && client->man_bad )
     return;
 
   client->ps.stats[ STAT_STATE ] |= SS_BOOSTED;
@@ -1682,7 +1687,7 @@ void ABooster_Think( gentity_t *self )
     if( !client )
       continue;
 
-    if( client->ps.stats[ STAT_PTEAM ] != PTE_ALIENS )
+    if( client->man_bad )
       continue;
 
     if( Distance( client->ps.origin, self->r.currentOrigin ) > REGEN_BOOST_RANGE )
@@ -1772,7 +1777,7 @@ qboolean ATrapper_CheckTarget( gentity_t *self, gentity_t *target, int range )
     return qfalse;
   if( target->flags & FL_NOTARGET || g_practise.integer ) // is the target cheating?
     return qfalse;
-  if( target->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS ) // one of us?
+  if( target->client->man_bad ) // one of us?
     return qfalse;
   if( target->client->sess.sessionTeam == TEAM_SPECTATOR ) // is the target alive?
     return qfalse;
@@ -1964,7 +1969,7 @@ void HReactor_Think( gentity_t *self )
       if( enemy->flags & FL_NOTARGET || g_practise.integer )
         continue;
 
-      if( enemy->client && enemy->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+      if( enemy->client && enemy->client->man_bad )
       {
         if( level.paused || enemy->client->pers.paused )
           continue;
@@ -2009,9 +2014,6 @@ void HReactor_Pain( gentity_t *self, gentity_t *attacker, int damage)
 	if (!attacker || !attacker->client)
 		return;
 
-	if (attacker->client->pers.teamSelection != PTE_HUMANS)
-		return;
-
 	G_TeamCommand(PTE_HUMANS, va( "print \"Reactor ^3DAMAGED^7 by ^1TEAMMATE^7 %s^7\n\"",
 	              attacker->client->pers.netname));
 }
@@ -2032,7 +2034,7 @@ void HArmoury_Activate( gentity_t *self, gentity_t *other, gentity_t *activator 
   if( self->spawned )
   {
     //only humans can activate this
-    if( activator->client->ps.stats[ STAT_PTEAM ] != PTE_HUMANS )
+    if( activator->client->man_bad )
       return;
 
     //if this is powered then call the armoury menu
@@ -2137,7 +2139,7 @@ void HMedistat_Think( gentity_t *self )
     {
       player = &g_entities[ entityList[ i ] ];
 
-      if( player->client && player->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+      if( player->client && player->client->man_bad )
       {
         if( player->health < player->client->ps.stats[ STAT_MAX_HEALTH ] &&
             player->client->ps.pm_type != PM_DEAD &&
@@ -2155,7 +2157,7 @@ void HMedistat_Think( gentity_t *self )
       {
         player = &g_entities[ entityList[ i ] ];
 
-        if( player->client && player->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+        if( player->client && player->client->man_bad )
         {
           if( player->health < player->client->ps.stats[ STAT_MAX_HEALTH ] &&
               player->client->ps.pm_type != PM_DEAD )
@@ -2342,7 +2344,7 @@ qboolean HMGTurret_CheckTarget( gentity_t *self, gentity_t *target, qboolean ign
   if( !traceEnt->client )
     return qfalse;
 
-  if( traceEnt->client && traceEnt->client->ps.stats[ STAT_PTEAM ] != PTE_ALIENS )
+  if( traceEnt->client && !traceEnt->client->man_bad )
     return qfalse;
 
   return qtrue;
@@ -2374,7 +2376,7 @@ void HMGTurret_FindEnemy( gentity_t *self )
   {
     target = &g_entities[ entityList[ i ] ];
 
-    if( target->client && target->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+    if( target->client && target->client->man_bad )
     {
       //if target is not valid keep searching
       if( !HMGTurret_CheckTarget( self, target, qfalse ) )
@@ -2393,7 +2395,7 @@ void HMGTurret_FindEnemy( gentity_t *self )
     {
       target = &g_entities[ entityList[ i ] ];
 
-      if( target->client && target->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+      if( target->client && target->client->man_bad )
       {
         //if target is not valid keep searching
         if( !HMGTurret_CheckTarget( self, target, qtrue ) )
@@ -2541,7 +2543,7 @@ void HTeslaGen_Think( gentity_t *self )
       if( enemy->flags & FL_NOTARGET || g_practise.integer )
         continue;
 
-      if( enemy->client && enemy->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS &&
+      if( enemy->client && enemy->client->man_bad &&
           enemy->health > 0 &&
           !level.paused && !enemy->client->pers.paused &&
           Distance( enemy->s.pos.trBase, self->s.pos.trBase ) <= TESLAGEN_RANGE )
@@ -2656,7 +2658,7 @@ void HSpawn_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
   VectorCopy( self->s.angles, new->angles );
   VectorCopy( self->s.origin2, new->origin2 );
   VectorCopy( self->s.angles2, new->angles2 );
-  new->fate = ( attacker && attacker->client && attacker->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS ) ? BF_TEAMKILLED : BF_DESTROYED;
+  new->fate = ( attacker && attacker->client ) ? BF_TEAMKILLED : BF_DESTROYED;
   new->next = NULL;
   G_LogBuild( new );
 
@@ -2684,7 +2686,7 @@ void HSpawn_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 
   if( attacker && attacker->client )
   {
-    if( attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+    if( qfalse )//( attacker->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
     {
       if( self->s.modelindex == BA_H_REACTOR )
         G_AddCreditToClient( attacker->client, REACTOR_VALUE, qtrue );
@@ -2699,7 +2701,9 @@ void HSpawn_Die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
           attacker->client->pers.netname ) );
       G_LogOnlyPrintf("%s ^3DESTROYED^7 by teammate %s^7\n",
           BG_FindHumanNameForBuildable( self->s.modelindex ), 
-          attacker->client->pers.netname ); 
+          attacker->client->pers.netname );
+
+      attacker->client->man_bad += 15;
     }
     G_LogPrintf( "Decon: %i %i %i: %s^7 destroyed %s by %s\n",
       attacker->client->ps.clientNum, self->s.modelindex, mod,
@@ -2743,8 +2747,7 @@ void HSpawn_Think( gentity_t *self )
           G_Damage( self, NULL, NULL, NULL, NULL, 10000, 0, MOD_SUICIDE );
           return;
         }
-        else if( g_antiSpawnBlock.integer && ent->client && 
-                 ent->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+        else if( g_antiSpawnBlock.integer && ent->client )
         {
           //spawnblock protection
           if( self->spawnBlockTime && level.time - self->spawnBlockTime > 10000 )
@@ -4717,10 +4720,6 @@ void G_BaseSelfDestruct( pTeam_t team )
     if( ent->health <= 0 )
       continue;
     if( ent->s.eType != ET_BUILDABLE )
-      continue;
-    if( team == PTE_HUMANS && ent->biteam != BIT_HUMANS )
-      continue;
-    if( team == PTE_ALIENS && ent->biteam != BIT_ALIENS )
       continue;
     G_Damage( ent, NULL, NULL, NULL, NULL, 10000, 0, MOD_SUICIDE );
   }

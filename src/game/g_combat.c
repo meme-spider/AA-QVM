@@ -231,6 +231,8 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
     G_LogOnlyPrintf("%s^7 was killed by ^1TEAMMATE^7 %s^7 (Did %d damage to %d max)\n",
       self->client->pers.netname, attacker->client->pers.netname, self->client->tkcredits[ attacker->s.number ], self->client->ps.stats[ STAT_MAX_HEALTH ] );
     G_TeamKill_Repent( attacker );
+
+    attacker->client->man_bad += 30;
   }
 
   self->enemy = attacker;
@@ -433,7 +435,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
   // if players did more than DAMAGE_FRACTION_FOR_KILL increment the stage counters
   if( !OnSameTeam( self, attacker ) && totalDamage >= ( self->client->ps.stats[ STAT_MAX_HEALTH ] * DAMAGE_FRACTION_FOR_KILL ) )
   {
-    if( self->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS ) 
+    if( self->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS ) 
     {
       trap_Cvar_Set( "g_alienKills", va( "%d", g_alienKills.integer + 1 ) );
       if( g_alienStage.integer < 2 )
@@ -442,7 +444,7 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
         level.humanStatsCounters.feeds++;
       }
     }
-    else if( self->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+    else if( self->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
     {
       trap_Cvar_Set( "g_humanKills", va( "%d", g_humanKills.integer + 1 ) );
       if( g_humanStage.integer < 2 )
@@ -1147,7 +1149,7 @@ dflags    these flags are used to control how T_Damage works
 void G_SelectiveDamage( gentity_t *targ, gentity_t *inflictor, gentity_t *attacker,
          vec3_t dir, vec3_t point, int damage, int dflags, int mod, int team )
 {
-  if( targ->client && ( team != targ->client->ps.stats[ STAT_PTEAM ] ) )
+  //if( targ->client && ( team != targ->client->ps.stats[ STAT_PTEAM ] ) )
     G_Damage( targ, inflictor, attacker, dir, point, damage, dflags, mod );
 }
 

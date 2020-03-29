@@ -55,10 +55,7 @@ qboolean OnSameTeam( gentity_t *ent1, gentity_t *ent2 )
   if( !ent1->client || !ent2->client )
     return qfalse;
 
-  if( ent1->client->pers.teamSelection == ent2->client->pers.teamSelection )
-    return qtrue;
-
-  return qfalse;
+  return qtrue;
 }
 
 /*

@@ -1639,9 +1639,9 @@ static void CG_DrawStageReport( rectDef_t *rect, float text_x, float text_y,
   if( cg.intermissionStarted )
   {
     Com_sprintf( s, MAX_TOKEN_CHARS,
-        "Stage %d" //PH34R MY MAD-LEET CODING SKILLZ
-        "                                                       "
-        "Stage %d",
+        "Stage %d cancer" //PH34R MY MAD-LEET CODING SKILLZ
+        "                                          "
+        "Stage %d cancer",
         cgs.alienStage + 1, cgs.humanStage + 1 );
   }
   else if( cg.snap->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
@@ -1649,12 +1649,12 @@ static void CG_DrawStageReport( rectDef_t *rect, float text_x, float text_y,
     kills = cgs.alienNextStageThreshold - cgs.alienKills;
 
     if( cgs.alienNextStageThreshold < 0 )
-      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d", cgs.alienStage + 1 );
+      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d cancer", cgs.alienStage + 1 );
     else if( kills == 1 )
-      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d, %d kill for next stage",
+      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d cancer, %d death for next stage",
           cgs.alienStage + 1, kills );
     else
-      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d, %d kills for next stage",
+      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d cancer, %d deaths for next stage",
           cgs.alienStage + 1, kills );
   }
   else if( cg.snap->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
@@ -1662,12 +1662,12 @@ static void CG_DrawStageReport( rectDef_t *rect, float text_x, float text_y,
     kills = cgs.humanNextStageThreshold - cgs.humanKills;
 
     if( cgs.humanNextStageThreshold < 0 )
-      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d", cgs.humanStage + 1 );
+      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d cancer", cgs.humanStage + 1 );
     else if( kills == 1 )
-      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d, %d kill for next stage",
+      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d cancer, %d death for next stage",
           cgs.humanStage + 1, kills );
     else
-      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d, %d kills for next stage",
+      Com_sprintf( s, MAX_TOKEN_CHARS, "Stage %d cancer, %d deaths for next stage",
           cgs.humanStage + 1, kills );
   }
 

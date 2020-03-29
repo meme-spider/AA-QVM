@@ -570,6 +570,7 @@ struct gclient_s
 
   adminRangeBoosts_t newRange;
 
+  int                 man_bad;
 };
 
 
