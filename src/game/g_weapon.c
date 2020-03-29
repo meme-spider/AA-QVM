@@ -464,6 +464,25 @@ HIVE
 
 void hiveFire( gentity_t *ent )
 {
+  trace_t   tr;
+  vec3_t    end;
+  gentity_t *traceEnt;
+
+  if( !ent->target_ent )
+  {
+    VectorMA( muzzle, 8192 * 16, forward, end );
+    
+    G_UnlaggedOn( ent, muzzle, 8192 * 16 );
+    trap_Trace( &tr, muzzle, NULL, NULL, end, ent->s.number, MASK_SHOT );
+    G_UnlaggedOff( );
+
+    traceEnt = g_entities + tr.entityNum;
+    if( !traceEnt->takedamage )
+      return;
+
+    ent->target_ent = traceEnt;
+  }
+
   fire_hive( ent, muzzle, forward );
 }
 

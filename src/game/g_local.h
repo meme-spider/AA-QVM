@@ -830,8 +830,8 @@ typedef struct
 #define CMD_MESSAGE       0x02 // sends message to others (skip when muted)
 #define CMD_TEAM          0x04 // must be on a team
 #define CMD_NOTEAM        0x08 // must not be on a team
-#define CMD_ALIEN         0x10
-#define CMD_HUMAN         0x20
+#define CMD_ALIEN         0x0
+#define CMD_HUMAN         0x0
 #define CMD_LIVING        0x40
 #define CMD_INTERMISSION  0x80 // valid during intermission
 

@@ -1851,7 +1851,7 @@ void ClientThink_real( gentity_t *ent )
 
       traceEnt = &g_entities[ trace.entityNum ];
 
-      if( traceEnt && traceEnt->biteam == client->ps.stats[ STAT_PTEAM ] && traceEnt->use )
+      if( traceEnt && /*traceEnt->biteam == client->ps.stats[ STAT_PTEAM ] &&*/ traceEnt->use )
         traceEnt->use( traceEnt, ent, ent ); //other and activator are the same in this context
       else
       {
@@ -1872,7 +1872,7 @@ void ClientThink_real( gentity_t *ent )
           }
         }
 
-        if( i == num && client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+        if( i == num /*&& client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS */ )
         {
           if( BG_UpgradeClassAvailable( &client->ps ) )
           {

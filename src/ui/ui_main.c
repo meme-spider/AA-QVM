@@ -3208,6 +3208,23 @@ static void UI_AddClass( pClass_t class )
 
 /*
 ===============
+UI_AddItem
+===============
+*/
+static void UI_AddItem( weapon_t weapon )
+{
+  uiInfo.tremHumanItemList[ uiInfo.tremHumanItemCount ].text =
+    String_Alloc( BG_FindHumanNameForWeapon( weapon ) );
+  uiInfo.tremHumanItemList[ uiInfo.tremHumanItemCount ].cmd =
+    String_Alloc( va( "cmd class %s\n", BG_FindNameForWeapon( weapon ) ) );
+  uiInfo.tremHumanItemList[ uiInfo.tremHumanItemCount ].infopane =
+    UI_FindInfoPaneByName( va( "%sitem", BG_FindNameForWeapon( weapon ) ) );
+
+  uiInfo.tremHumanItemCount++;
+}
+
+/*
+===============
 UI_LoadTremAlienClasses
 ===============
 */
@@ -3223,23 +3240,9 @@ static void UI_LoadTremAlienClasses( void )
     UI_AddClass( PCL_ALIEN_BUILDER0_UPG );
   else if( BG_ClassIsAllowed( PCL_ALIEN_BUILDER0 ) )
     UI_AddClass( PCL_ALIEN_BUILDER0 );
-}
 
-/*
-===============
-UI_AddItem
-===============
-*/
-static void UI_AddItem( weapon_t weapon )
-{
-  uiInfo.tremHumanItemList[ uiInfo.tremHumanItemCount ].text =
-    String_Alloc( BG_FindHumanNameForWeapon( weapon ) );
-  uiInfo.tremHumanItemList[ uiInfo.tremHumanItemCount ].cmd =
-    String_Alloc( va( "cmd class %s\n", BG_FindNameForWeapon( weapon ) ) );
-  uiInfo.tremHumanItemList[ uiInfo.tremHumanItemCount ].infopane =
-    UI_FindInfoPaneByName( va( "%sitem", BG_FindNameForWeapon( weapon ) ) );
-
-  uiInfo.tremHumanItemCount++;
+  if( BG_WeaponIsAllowed( WP_MACHINEGUN ) )
+    UI_AddItem( PCL_HUMAN );
 }
 
 /*
@@ -3259,6 +3262,15 @@ static void UI_LoadTremHumanItems( void )
     UI_AddItem( WP_HBUILD2 );
   else if( BG_WeaponIsAllowed( WP_HBUILD ) )
     UI_AddItem( WP_HBUILD );
+
+  if( BG_WeaponIsAllowed( WP_ALEVEL0 ) )
+    UI_AddItem( WP_ALEVEL0 );
+
+  if( BG_WeaponIsAllowed( WP_ABUILD2 ) &&
+      BG_FindStagesForClass( PCL_ALIEN_BUILDER0_UPG, UI_GetCurrentAlienStage( ) ) )
+    UI_AddItem( WP_ABUILD2 );
+  else
+    UI_AddItem( WP_ABUILD );
 }
 
 /*
@@ -3351,7 +3363,7 @@ static void UI_LoadTremHumanArmouryBuys( void )
 
   for( i = WP_NONE + 1; i < WP_NUM_WEAPONS; i++ )
   {
-    if( BG_FindTeamForWeapon( i ) == WUT_HUMANS &&
+    if( /*BG_FindTeamForWeapon( i ) == WUT_HUMANS &&*/
         BG_FindPurchasableForWeapon( i ) &&
         BG_FindStagesForWeapon( i, stage ) &&
         BG_WeaponIsAllowed( i ) &&
@@ -3373,7 +3385,7 @@ static void UI_LoadTremHumanArmouryBuys( void )
 
   for( i = UP_NONE + 1; i < UP_NUM_UPGRADES; i++ )
   {
-    if( BG_FindTeamForUpgrade( i ) == WUT_HUMANS &&
+    if( /*BG_FindTeamForUpgrade( i ) == WUT_HUMANS &&*/
         BG_FindPurchasableForUpgrade( i ) &&
         BG_FindStagesForUpgrade( i, stage ) &&
         BG_UpgradeIsAllowed( i ) &&

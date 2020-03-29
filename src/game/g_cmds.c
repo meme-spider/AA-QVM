@@ -2770,7 +2770,8 @@ void Cmd_Class_f( gentity_t *ent )
     if( ent->client->sess.spectatorState == SPECTATOR_FOLLOW )
       G_StopFollowing( ent );
 
-    if( ent->client->pers.teamSelection == PTE_ALIENS )
+    //if( ent->client->pers.teamSelection == PTE_ALIENS )
+    if( qtrue )
     {
       if( !g_practise.integer )
       {
@@ -2778,6 +2779,7 @@ void Cmd_Class_f( gentity_t *ent )
             newClass != PCL_ALIEN_BUILDER0_UPG &&
             newClass != PCL_ALIEN_LEVEL0 )
         {
+          goto must_be_human;
           trap_SendServerCommand( ent-g_entities,
             va( "print \"You cannot spawn with class %s\n\"", s ) );
           return;
@@ -2814,6 +2816,7 @@ void Cmd_Class_f( gentity_t *ent )
     }
     else if( ent->client->pers.teamSelection == PTE_HUMANS )
     {
+must_be_human:
       //set the item to spawn with
       if( !Q_stricmp( s, BG_FindNameForWeapon( WP_MACHINEGUN ) ) &&
           BG_WeaponIsAllowed( WP_MACHINEGUN ) )
@@ -2851,8 +2854,7 @@ void Cmd_Class_f( gentity_t *ent )
   if( ent->health <= 0 )
     return;
 
-  if( ent->client->pers.teamSelection == PTE_ALIENS &&
-      !( ent->client->ps.stats[ STAT_STATE ] & SS_INFESTING ) &&
+  if( !( ent->client->ps.stats[ STAT_STATE ] & SS_INFESTING ) &&
       !( ent->client->ps.stats[ STAT_STATE ] & SS_HOVELING ) )
   {
     if( newClass == PCL_NONE )
@@ -2881,8 +2883,10 @@ void Cmd_Class_f( gentity_t *ent )
       {
         other = &g_entities[ entityList[ i ] ];
 
-        if( ( other->client && other->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS ) ||
-            ( other->s.eType == ET_BUILDABLE && other->biteam == BIT_HUMANS ) )
+        if( other == ent )
+          continue;
+
+        if( other->client && other->client->man_bad )
         {
           humanNear = qtrue;
         }
@@ -2978,7 +2982,8 @@ void Cmd_Class_f( gentity_t *ent )
    else if( ent->client->pers.teamSelection == PTE_HUMANS )
    {
     //humans cannot use this command whilst alive
-    if( ent->client->pers.classSelection != PCL_NONE )
+    //if( ent->client->pers.classSelection != PCL_NONE )
+    if( qfalse )
     {
       trap_SendServerCommand( ent-g_entities, va( "print \"You must be dead to use the class command\n\"" ) );
       return;
@@ -3425,7 +3430,7 @@ void Cmd_Buy_f( gentity_t *ent )
   char      s[ MAX_TOKEN_CHARS ];
   int       i;
   int       weapon, upgrade, numItems = 0;
-  int       maxAmmo, maxClips;
+  int       maxAmmo, maxClips, price;
   qboolean  buyingEnergyAmmo = qfalse;
   qboolean  hasEnergyWeapon = qfalse;
 
@@ -3495,8 +3500,12 @@ void Cmd_Buy_f( gentity_t *ent )
       return;
     }
 
+    price = BG_FindPriceForWeapon( weapon );
+    if( ent->client->pers.teamSelection == PTE_ALIENS )
+      price /= 175;
+
     //can afford this?
-    if( BG_FindPriceForWeapon( weapon ) > (short)ent->client->ps.persistant[ PERS_CREDIT ] )
+    if( price > (short)ent->client->ps.persistant[ PERS_CREDIT ] )
     {
       G_TriggerMenu( ent->client->ps.clientNum, MN_H_NOFUNDS );
       return;
@@ -3509,7 +3518,8 @@ void Cmd_Buy_f( gentity_t *ent )
       return;
     }
 
-    if( BG_FindTeamForWeapon( weapon ) != WUT_HUMANS )
+    //if( BG_FindTeamForWeapon( weapon ) != WUT_HUMANS )
+    if( qfalse )
     {
       //shouldn't need a fancy dialog
       trap_SendServerCommand( ent-g_entities, va( "print \"You can't buy alien items\n\"" ) );
@@ -3547,7 +3557,7 @@ void Cmd_Buy_f( gentity_t *ent )
     ent->client->ps.stats[ STAT_MISC ] = 0;
 
     //subtract from funds
-    G_AddCreditToClient( ent->client, -(short)BG_FindPriceForWeapon( weapon ), qfalse );
+    G_AddCreditToClient( ent->client, -(short)price, qfalse );
   }
   else if( upgrade != UP_NONE )
   {
@@ -3566,8 +3576,12 @@ void Cmd_Buy_f( gentity_t *ent )
       return;
     }
 
+    price = BG_FindPriceForUpgrade( upgrade );
+    if( ent->client->pers.teamSelection == PTE_ALIENS )
+      price /= 175;
+
     //can afford this?
-    if( BG_FindPriceForUpgrade( upgrade ) > (short)ent->client->ps.persistant[ PERS_CREDIT ] )
+    if( price > (short)ent->client->ps.persistant[ PERS_CREDIT ] )
     {
       G_TriggerMenu( ent->client->ps.clientNum, MN_H_NOFUNDS );
       return;
@@ -3620,7 +3634,7 @@ void Cmd_Buy_f( gentity_t *ent )
       G_GiveClientMaxAmmo( ent, qtrue );
 
     //subtract from funds
-    G_AddCreditToClient( ent->client, -(short)BG_FindPriceForUpgrade( upgrade ), qfalse );
+    G_AddCreditToClient( ent->client, -(short)price, qfalse );
   }
   else
   {
@@ -3656,7 +3670,7 @@ void Cmd_Sell_f( gentity_t *ent )
 {
   char      s[ MAX_TOKEN_CHARS ];
   int       i;
-  int       weapon, upgrade;
+  int       weapon, upgrade, price;
 
   trap_Argv( 1, s, sizeof( s ) );
 
@@ -3692,8 +3706,12 @@ void Cmd_Sell_f( gentity_t *ent )
 
       BG_RemoveWeaponFromInventory( weapon, ent->client->ps.stats );
 
+      price = BG_FindPriceForWeapon( weapon );
+      if( ent->client->pers.teamSelection == PTE_ALIENS )
+        price /= 175;
+
       //add to funds
-      G_AddCreditToClient( ent->client, (short)BG_FindPriceForWeapon( weapon ), qfalse );
+      G_AddCreditToClient( ent->client, (short)price, qfalse );
     }
 
     //if we have this weapon selected, force a new selection
@@ -3774,8 +3792,12 @@ void Cmd_Sell_f( gentity_t *ent )
           }
         }
 
+        price = BG_FindPriceForUpgrade( upgrade );
+        if( ent->client->pers.teamSelection == PTE_ALIENS )
+          price /= 175;
+
         //add to funds
-        G_AddCreditToClient( ent->client, (short)BG_FindPriceForUpgrade( i ), qfalse );
+        G_AddCreditToClient( ent->client, (short)price, qfalse );
       }
     }
   }

@@ -1989,7 +1989,7 @@ classAttributes_t bg_classList[ ] =
     100.0f,                                         //float   stopSpeed;
     220.0f,                                         //float   jumpMagnitude;
     1.0f,                                           //float   knockbackScale;
-    { PCL_NONE, PCL_NONE, PCL_NONE },               //int     children[ 3 ];
+    { PCL_ALIEN_LEVEL0, PCL_NONE, PCL_NONE },               //int     children[ 3 ];
     0,                                              //int     cost;
     0                                               //int     value;
   },
@@ -2028,7 +2028,7 @@ classAttributes_t bg_classList[ ] =
     100.0f,                                         //float   stopSpeed;
     270.0f,                                         //float   jumpMagnitude;
     1.0f,                                           //float   knockbackScale;
-    { PCL_NONE, PCL_NONE, PCL_NONE },               //int     children[ 3 ];
+    { PCL_HUMAN, PCL_ALIEN_LEVEL3_UPG, PCL_ALIEN_LEVEL4 },               //int     children[ 3 ];
     0,                                              //int     cost;
     0                                               //int     value;
   },
@@ -2756,7 +2756,8 @@ int BG_ClassCanEvolveFromTo( int fclass, int tclass, int credits, int num )
     if( bg_classList[ i ].classNum == fclass )
     {
       for( j = 0; j < 3; j++ )
-        if( bg_classList[ i ].children[ j ] == tclass )
+        if( tclass == PCL_HUMAN || tclass == PCL_HUMAN_BSUIT
+            || bg_classList[ i ].children[ j ] == tclass )
           return num + cost;
 
       for( j = 0; j < 3; j++ )
@@ -3449,7 +3450,7 @@ weaponAttributes_t bg_weapons[ ] =
   },
   {
     WP_ALEVEL0,           //int       weaponNum;
-    0,                    //int       price;
+    0,                   //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level0",             //char      *weaponName;
@@ -3467,14 +3468,14 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_ALEVEL1,           //int       weaponNum;
-    0,                    //int       price;
+    500,                    //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level1",             //char      *weaponName;
@@ -3492,14 +3493,14 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_ALEVEL1_UPG,       //int       weaponNum;
-    0,                    //int       price;
+    600,                    //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level1upg",          //char      *weaponName;
@@ -3517,14 +3518,14 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qtrue,                //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_ALEVEL2,           //int       weaponNum;
-    0,                    //int       price;
+    700,                    //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level2",             //char      *weaponName;
@@ -3542,14 +3543,14 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_ALEVEL2_UPG,       //int       weaponNum;
-    0,                    //int       price;
+    1000,                    //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level2upg",          //char      *weaponName;
@@ -3567,14 +3568,14 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_ALEVEL3,           //int       weaponNum;
-    0,                    //int       price;
+    1200,                 //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level3",             //char      *weaponName;
@@ -3592,14 +3593,14 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_ALEVEL3_UPG,       //int       weaponNum;
-    0,                    //int       price;
+    1500,                 //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level3upg",          //char      *weaponName;
@@ -3617,14 +3618,14 @@ weaponAttributes_t bg_weapons[ ] =
     qtrue,                //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qtrue,                //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_ALEVEL4,           //int       weaponNum;
-    0,                    //int       price;
+    2000,                 //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "level4",             //char      *weaponName;
@@ -3642,21 +3643,21 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_LOCKBLOB_LAUNCHER, //int       weaponNum;
-    0,                    //int       price;
+    900,                  //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "lockblob",           //char      *weaponName;
     "Lock Blob",          //char      *weaponHumanName;
-    0,                    //int       maxAmmo;
-    0,                    //int       maxClips;
-    qtrue,                //int       infiniteAmmo;
+    3,                    //int       maxAmmo;
+    2,                    //int       maxClips;
+    qfalse,                //int       infiniteAmmo;
     qfalse,               //int       usesEnergy;
     500,                  //int       repeatRate1;
     500,                  //int       repeatRate2;
@@ -3667,21 +3668,21 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_HIVE,              //int       weaponNum;
-    0,                    //int       price;
+    666,                  //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "hive",               //char      *weaponName;
     "Hive",               //char      *weaponHumanName;
-    0,                    //int       maxAmmo;
+    12,                    //int       maxAmmo;
     0,                    //int       maxClips;
-    qtrue,                //int       infiniteAmmo;
+    qfalse,                //int       infiniteAmmo;
     qfalse,               //int       usesEnergy;
     500,                  //int       repeatRate1;
     500,                  //int       repeatRate2;
@@ -3692,23 +3693,23 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_ALIENS            //WUTeam_t  team;
   },
   {
     WP_MGTURRET,          //int       weaponNum;
-    0,                    //int       price;
+    500,                  //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "mgturret",           //char      *weaponName;
     "Machinegun Turret",  //char      *weaponHumanName;
-    0,                    //int       maxAmmo;
-    0,                    //int       maxClips;
-    qtrue,                //int       infiniteAmmo;
+    50,                    //int       maxAmmo;
+    5,                    //int       maxClips;
+    qfalse,                //int       infiniteAmmo;
     qfalse,               //int       usesEnergy;
-    0,                    //int       repeatRate1;
+    200,                    //int       repeatRate1;
     0,                    //int       repeatRate2;
     0,                    //int       repeatRate3;
     0,                    //int       reloadTime;
@@ -3717,21 +3718,21 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_HUMANS            //WUTeam_t  team;
   },
   {
     WP_TESLAGEN,          //int       weaponNum;
-    0,                    //int       price;
+    1000,                 //int       price;
     ( 1 << S1 )|( 1 << S2 )|( 1 << S3 ), //int  stages
     SLOT_WEAPON,          //int       slots;
     "teslagen",           //char      *weaponName;
     "Tesla Generator",    //char      *weaponHumanName;
-    0,                    //int       maxAmmo;
+    90,                   //int       maxAmmo;
     0,                    //int       maxClips;
-    qtrue,                //int       infiniteAmmo;
+    qfalse,                //int       infiniteAmmo;
     qtrue,                //int       usesEnergy;
     500,                  //int       repeatRate1;
     500,                  //int       repeatRate2;
@@ -3742,7 +3743,7 @@ weaponAttributes_t bg_weapons[ ] =
     qfalse,               //qboolean  hasThirdMode;
     qfalse,               //qboolean  canZoom;
     90.0f,                //float     zoomFov;
-    qfalse,               //qboolean  purchasable;
+    qtrue,                //qboolean  purchasable;
     qfalse,               //qboolean  longRanged;
     0,                    //int       buildDelay;
     WUT_HUMANS            //WUTeam_t  team;
