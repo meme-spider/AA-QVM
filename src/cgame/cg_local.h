@@ -1142,6 +1142,7 @@ typedef struct
   int           ping;
 } cg_t;
 
+#define NUM_COUGHING_SOUNDS 5
 
 // all of the model, shader, and sound references that are
 // loaded at gamestate time are stored in cgMedia_t
@@ -1273,6 +1274,8 @@ typedef struct
 
   qhandle_t   buildWeaponTimerPie[ 8 ];
   qhandle_t   upgradeClassIconShader;
+
+  sfxHandle_t coughingSounds[ NUM_COUGHING_SOUNDS ];
 } cgMedia_t;
 
 typedef struct

@@ -256,6 +256,7 @@ struct gentity_s
   int               suicideTime;                    // when the client will suicide
 
   int               lastDamageTime;
+  int               lastDamageMOD;
   
   int               bdnumb;     // buildlog entry ID
   
@@ -469,6 +470,14 @@ typedef struct {
 	float rangeBoost;
 } adminRangeBoosts_t;
 
+enum {
+	COVID_NONE,
+	COVID_ASYMPTOMATIC,
+	COVID_MODERATE,
+	COVID_SEVERE,
+	COVID_RECOVERED
+};
+
 // this structure is cleared on each ClientSpawn(),
 // except for 'client->pers' and 'client->sess'
 struct gclient_s
@@ -571,6 +580,10 @@ struct gclient_s
   adminRangeBoosts_t newRange;
 
   int                 man_bad;
+  int                 covidKind;
+  float               covidProgress;
+  float               covidSeverity;
+  float               covidDamage;
 };
 
 
@@ -1172,6 +1185,7 @@ void G_UnlaggedClear( gentity_t *ent );
 void G_UnlaggedCalc( int time, gentity_t *skipEnt );
 void G_UnlaggedOn( gentity_t *attacker, vec3_t muzzle, float range );
 void G_UnlaggedOff( void );
+void G_ContractCoronavirus( gentity_t *ent );
 void ClientThink( int clientNum );
 void ClientEndFrame( gentity_t *ent );
 void G_RunClient( gentity_t *ent );
