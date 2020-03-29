@@ -2139,7 +2139,7 @@ void HMedistat_Think( gentity_t *self )
     {
       player = &g_entities[ entityList[ i ] ];
 
-      if( player->client && player->client->man_bad )
+      if( player->client && !player->client->man_bad )
       {
         if( player->health < player->client->ps.stats[ STAT_MAX_HEALTH ] &&
             player->client->ps.pm_type != PM_DEAD &&
@@ -2157,7 +2157,7 @@ void HMedistat_Think( gentity_t *self )
       {
         player = &g_entities[ entityList[ i ] ];
 
-        if( player->client && player->client->man_bad )
+        if( player->client && !player->client->man_bad )
         {
           if( player->health < player->client->ps.stats[ STAT_MAX_HEALTH ] &&
               player->client->ps.pm_type != PM_DEAD )
