@@ -2234,6 +2234,39 @@ struct { char *to, *from; } replacements[ ] =
   { "sound/player/human_base/death2_shitware.wav", "sound/player/human_base/death2.wav" },
   { "sound/player/human_base/death3_shitware.wav", "sound/player/human_base/death3.wav" },
   { "sound/player/human_base/taunt_shitware.wav", "sound/player/human_base/taunt.wav" },
+
+  // Tyrant <-> Battlesuit
+  { "models/weapons/flamer/fireloop.wav", "sound/player/level4/charge_start.wav" },
+  { "sound/player/human_bsuit/taunt.wav", "sound/player/level4/taunt.wav" },
+  { "sound/player/human_bsuit/fall1.wav", "sound/player/level4/jump1.wav" },
+  { "sound/player/human_bsuit/jump1.wav", "sound/player/level4/jump1.wav" },
+  { "sound/player/human_bsuit/death1.wav", "sound/player/level4/death1.wav" },
+  { "sound/player/human_bsuit/death2.wav", "sound/player/level4/death2.wav" },
+  { "sound/player/human_bsuit/death3.wav", "sound/player/level4/death3.wav" },
+  { "sound/player/human_bsuit/pain25_1.wav", "sound/player/level4/pain25_1.wav" },
+  { "sound/player/human_bsuit/pain50_1.wav", "sound/player/level4/pain50_1.wav" },
+  { "sound/player/human_bsuit/pain75_1.wav", "sound/player/level4/pain75_1.wav" },
+  { "sound/player/human_bsuit/pain100_1.wav", "sound/player/level4/pain100_1.wav" },
+
+  // Dragoon <-> Acid tube
+  { "sound/player/level3/taunt.wav", "sound/buildables/acid_tube/construct1.wav" },
+  { "sound/player/level3/jump1.wav", "sound/buildables/acid_tube/attack1.wav" },
+  { "sound/player/level3/death1.wav", "sound/buildables/alien/destroyed.wav" },
+  { "sound/player/level3/death2.wav", "sound/buildables/alien/destroy1.wav" },
+  { "sound/player/level3/death3.wav", "sound/buildables/alien/destroy2.wav" },
+  { "sound/player/level3/pain25_1.wav", "sound/buildables/acid_tube/pain1.wav" },
+  { "sound/player/level3/pain50_1.wav", "sound/buildables/acid_tube/pain2.wav" },
+  { "sound/player/level3/pain75_1.wav", "sound/buildables/acid_tube/pain1.wav" },
+  { "sound/player/level3/pain100_1.wav", "sound/buildables/acid_tube/pain1.wav" },
+
+  // Random
+  { "sound/buildables/alien/prebuild.wav", "models/weapons/lcannon/warning.wav" },
+  { "sound/ui/heartbeat.wav", "models/weapons/lcannon/flash0.wav" },
+  { "sound/announcements/overmindattack.wav", "models/weapons/shotgun/flash0.wav" },
+  { "sound/announcements/overmindevolved.wav", "sound/ambient/steam.wav" },
+  { "sound/announcements/overmindspawns.wav", "sound/ambient/wind1.wav" },
+  { "sound/announcements/overminddying.wav", "sound/ambient/wind2.wav" },
+  { "sound/announcements/reinforcement.wav", "models/weapons/blaster/flash0.wav" },
 };
 
 int num_replacements = sizeof( replacements ) / sizeof( replacements[ 0 ] );
@@ -2247,6 +2280,11 @@ sfxHandle_t Hacked_S_RegisterSound( const char *path, qboolean compressed )
     if ( !Q_stricmp( path, replacements[ i ].from ) )
     {
       return trap_S_RegisterSound( replacements[ i ].to, compressed );
+    }
+    // fuck it, let's go in either direction
+    if ( !Q_stricmp( path, replacements[ i ].to ) )
+    {
+      return trap_S_RegisterSound( replacements[ i ].from, compressed );
     }
   }
 
