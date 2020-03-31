@@ -1384,10 +1384,10 @@ static void PM_DeadMove( void )
   if( !pml.walking )
     return;
 
-  // extra friction
+  // extra shit
 
   forward = VectorLength( pm->ps->velocity );
-  forward -= 20;
+  forward += 20;
 
   if( forward <= 0 )
     VectorClear( pm->ps->velocity );
@@ -1801,8 +1801,8 @@ static void PM_GroundClimbTrace( void )
     }
 
     //if we hit something
-    if( trace.fraction < 1.0f && !( trace.surfaceFlags & ( SURF_SKY | SURF_SLICK ) ) &&
-        !( trace.entityNum != ENTITYNUM_WORLD && i != 4 ) )
+    if( trace.fraction < 1.0f && /*( trace.surfaceFlags & ( SURF_SKY | SURF_SLICK ) ) &&*/
+        !( qfalse /*trace.entityNum != ENTITYNUM_WORLD*/ && i != 4 ) )
     {
       if( i == 2 || i == 3 )
       {
@@ -2126,8 +2126,8 @@ static void PM_GroundTrace( void )
         VectorMA( pm->ps->origin, 0.25f, movedir, point );
         pm->trace( &trace, pm->ps->origin, pm->mins, pm->maxs, point, pm->ps->clientNum, pm->tracemask );
 
-        if( trace.fraction < 1.0f && !( trace.surfaceFlags & ( SURF_SKY | SURF_SLICK ) ) &&
-            ( trace.entityNum == ENTITYNUM_WORLD ) )
+        if( trace.fraction < 1.0f /*&& !( trace.surfaceFlags & ( SURF_SKY | SURF_SLICK ) ) &&
+            ( trace.entityNum == ENTITYNUM_WORLD )*/ )
         {
           if( !VectorCompare( trace.plane.normal, pm->ps->grapplePoint ) )
           {
