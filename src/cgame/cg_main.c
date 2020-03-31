@@ -2228,7 +2228,12 @@ sfxHandle_t   trap_S_RegisterSound( const char *sample, qboolean compressed );
 
 struct { char *to, *from; } replacements[ ] =
 {
-  { "sound/player/level0/taunt.wav", "models/weapons/rifle/flash0.wav" },
+  /* Clients cache sounds, so new files need to have different paths to get
+     a live reload to work properly. */
+  { "sound/player/human_base/death1_shitware.wav", "sound/player/human_base/death1.wav" },
+  { "sound/player/human_base/death2_shitware.wav", "sound/player/human_base/death2.wav" },
+  { "sound/player/human_base/death3_shitware.wav", "sound/player/human_base/death3.wav" },
+  { "sound/player/human_base/taunt_shitware.wav", "sound/player/human_base/taunt.wav" },
 };
 
 int num_replacements = sizeof( replacements ) / sizeof( replacements[ 0 ] );
