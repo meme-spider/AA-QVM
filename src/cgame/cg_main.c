@@ -2124,3 +2124,37 @@ char *CG_VoIPString( void )
 
   return voipString;
 }
+
+/*
+================
+Hacked_S_RegisterSound
+
+Replace sounds in the game without having to actually mess with the .pk3s
+================
+*/
+
+#undef trap_S_RegisterSound
+// This is the *actual* prototype
+sfxHandle_t   trap_S_RegisterSound( const char *sample, qboolean compressed );
+
+struct { char *to, *from; } replacements[ ] =
+{
+  { "sound/player/level0/taunt.wav", "models/weapons/rifle/flash0.wav" },
+};
+
+int num_replacements = sizeof( replacements ) / sizeof( replacements[ 0 ] );
+
+sfxHandle_t Hacked_S_RegisterSound( const char *path, qboolean compressed )
+{
+  int i;
+
+  for ( i = 0; i < num_replacements; i++ )
+  {
+    if ( !Q_stricmp( path, replacements[ i ].from ) )
+    {
+      return trap_S_RegisterSound( replacements[ i ].to, compressed );
+    }
+  }
+
+  return trap_S_RegisterSound( path, compressed );
+}
