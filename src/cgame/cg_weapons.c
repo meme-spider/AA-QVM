@@ -887,6 +887,8 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
         }
   }
 
+  gun.customShader = CG_RollAShitShader( cent->currentState.number );
+
   if( !noGunModel )
   {
     CG_PositionEntityOnTag( &gun, parent, parent->hModel, "tag_weapon" );
@@ -909,6 +911,7 @@ void CG_AddPlayerWeapon( refEntity_t *parent, playerState_t *ps, centity_t *cent
 
       CG_PositionRotatedEntityOnTag( &barrel, &gun, weapon->weaponModel, "tag_barrel" );
 
+      barrel.customShader = CG_RollAShitShader( cent->currentState.number + 1 );
       trap_R_AddRefEntityToScene( &barrel );
     }
   }

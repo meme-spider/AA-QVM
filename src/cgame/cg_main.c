@@ -961,6 +961,78 @@ static void CG_RegisterSounds( void )
 
 //===================================================================================
 
+// Player and weapon shaders will get replaced with these at random
+const char *shitShaderPaths[ ] =
+{
+    "models/players/builder/builder",
+    "models/players/human_base/base",
+    "models/players/human_base/armour",
+    "models/players/human_base/h_base",
+    "models/players/human_base/jetpack",
+    "models/players/human_base/jetpack_flash",
+    "models/players/human_base/h_helmet",
+    "models/players/human_base/light",
+    "models/players/human_base/shoulderpats",
+    "models/players/human_bsuit/human_bsuit",
+    "models/players/level0/level0",
+    "models/players/level1/level1",
+    "models/players/level1/level1upg",
+    "models/players/level2/adv",
+    "models/players/level2/default",
+    "models/players/level2/electric",
+    "models/players/level3/level3",
+    "models/players/level3/level3adv",
+    "models/players/level4/level4",
+    "models/weapons/ackit/ackit",
+    "models/weapons/ackit/screen",
+    "models/weapons/blaster/blaster",
+    "models/weapons/chaingun/chaingun",
+    "models/weapons/chaingun/barrels",
+    "models/weapons/ckit/ckit",
+    "models/weapons/ckit/screen",
+    "models/weapons/flamer/flamer",
+    "models/weapons/flamer/gas",
+    "models/weapons/flamer/pilot",
+    "models/weapons/grenade/grenade",
+    "models/weapons/lcannon/flash",
+    "models/weapons/lcannon/lcannon",
+    "models/weapons/level3upg/missile",
+    "models/weapons/lgun/lgun",
+    "models/weapons/lockblob/missile",
+    "models/weapons/mdriver/mdriver",
+    "models/weapons/prifle/prifle",
+    "models/weapons/psaw/psaw",
+    "models/weapons/psaw/chain",
+    "models/weapons/rifle/rifle",
+    "models/weapons/shells/rifle-shell",
+    "models/weapons/shells/shotgun-shell",
+    "models/weapons/shotgun/shotgun",
+    "models/buildables/acid_tube/acid_tube",
+    "models/buildables/arm/arm_body",
+    "models/buildables/arm/arm_parts",
+    "models/buildables/barricade/pod_strands",
+    "models/buildables/barricade/ref2",
+    "models/buildables/booster/booster_head",
+    "models/buildables/booster/booster_sac",
+    "models/buildables/dcc/comp_display",
+    "models/buildables/dcc/comp_parts",
+    "models/buildables/eggpod/pod_body",
+    "models/buildables/hive/hive",
+    "models/buildables/hivel/hovel",
+    "models/buildables/medistat/medi_base",
+    "models/buildables/mgturret/turret_base",
+    "models/buildables/mgturret/turret_top",
+    "models/buildables/overmind/overmind",
+    "models/buildables/reactor/reactor_body",
+    "models/buildables/reactor/reactor_meter",
+    "models/buildables/repeater/repeater_body",
+    "models/buildables/telenode/energy",
+    "models/buildables/telenode/telenode_top",
+    "models/buildables/tesla/tesla_ball",
+    "models/buildables/tesla/tesla_main",
+    "models/buildables/tesla/tesla_spark",
+    "models/buildables/trapper/trapper_body",
+};
 
 /*
 =================
@@ -1123,6 +1195,23 @@ static void CG_RegisterGraphics( void )
 
     cgs.gameParticleSystems[ i ] = CG_RegisterParticleSystem( (char *)psName );
   }
+
+  for( i = 0; i < NUM_SHIT_SHADERS; i++ )
+  {
+    cgs.media.shitShaders[ i ] = trap_R_RegisterShader( shitShaderPaths[ i ] );
+  }
+}
+
+qhandle_t CG_RollAShitShader( int seed )
+{
+  unsigned int index;
+
+  index = 1103515245 * seed + 12345;
+  index = 1103515245 * index + 12345;
+  index += ( ( cg.time + rand( ) % 1000 + seed * 666 ) / 30000 * 30000 ) * 17;
+  index %= NUM_SHIT_SHADERS;
+
+  return cgs.media.shitShaders[ index ];
 }
 
 

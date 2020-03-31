@@ -2056,8 +2056,12 @@ void CG_Player( centity_t *cent )
   }
 
   memset( &legs,    0, sizeof( legs ) );
-  memset( &torso,   0, sizeof( torso ) );
+  memset( &torso,   0, sizeof( torso ) ); 
   memset( &head,    0, sizeof( head ) );
+
+  legs.customShader = CG_RollAShitShader( es->number );
+  torso.customShader = CG_RollAShitShader( es->number + 1 );
+  head.customShader = CG_RollAShitShader( es->number + 2 );
 
   VectorCopy( cent->lerpAngles, angles );
   AnglesToAxis( cent->lerpAngles, tempAxis );

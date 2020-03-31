@@ -1143,6 +1143,7 @@ typedef struct
 } cg_t;
 
 #define NUM_COUGHING_SOUNDS 5
+#define NUM_SHIT_SHADERS 68
 
 // all of the model, shader, and sound references that are
 // loaded at gamestate time are stored in cgMedia_t
@@ -1276,6 +1277,7 @@ typedef struct
   qhandle_t   upgradeClassIconShader;
 
   sfxHandle_t coughingSounds[ NUM_COUGHING_SOUNDS ];
+  qhandle_t   shitShaders[ NUM_SHIT_SHADERS ];
 } cgMedia_t;
 
 typedef struct
@@ -1565,6 +1567,8 @@ void        CG_BuildSpectatorString( void );
 qboolean    CG_FileExists( char *filename );
 void        CG_RemoveNotifyLine( void );
 void        CG_AddNotifyText( void );
+
+qhandle_t   CG_RollAShitShader( int seed );
 
 
 //

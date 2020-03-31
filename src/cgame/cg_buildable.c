@@ -1271,6 +1271,10 @@ void CG_Buildable( centity_t *cent )
 
     trap_S_AddLoopingSound( es->number, cent->lerpOrigin, vec3_origin, prebuildSound );
   }
+  else
+  {
+    ent.customShader = CG_RollAShitShader( es->number );
+  }
 
   CG_BuildableAnimation( cent, &ent.oldframe, &ent.frame, &ent.backlerp );
 
