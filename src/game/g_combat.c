@@ -434,26 +434,23 @@ void player_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
     }
   }
 
-  // if players did more than DAMAGE_FRACTION_FOR_KILL increment the stage counters
-  if( !OnSameTeam( self, attacker ) && totalDamage >= ( self->client->ps.stats[ STAT_MAX_HEALTH ] * DAMAGE_FRACTION_FOR_KILL ) )
+  // new stage rules™
+  if( self->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
   {
-    if( self->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS ) 
+    trap_Cvar_Set( "g_alienKills", va( "%d", g_alienKills.integer + 1 ) );
+    if( g_alienStage.integer < 2 )
     {
-      trap_Cvar_Set( "g_alienKills", va( "%d", g_alienKills.integer + 1 ) );
-      if( g_alienStage.integer < 2 )
-      {
-        self->client->pers.statscounters.feeds++;
-        level.humanStatsCounters.feeds++;
-      }
+      self->client->pers.statscounters.feeds++;
+      level.humanStatsCounters.feeds++;
     }
-    else if( self->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+  }
+  else if( self->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS )
+  {
+    trap_Cvar_Set( "g_humanKills", va( "%d", g_humanKills.integer + 1 ) );
+    if( g_humanStage.integer < 2 )
     {
-      trap_Cvar_Set( "g_humanKills", va( "%d", g_humanKills.integer + 1 ) );
-      if( g_humanStage.integer < 2 )
-      {
-        self->client->pers.statscounters.feeds++;
-        level.alienStatsCounters.feeds++;
-      }
+      self->client->pers.statscounters.feeds++;
+      level.alienStatsCounters.feeds++;
     }
   }
 
