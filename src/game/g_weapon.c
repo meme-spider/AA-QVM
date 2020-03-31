@@ -903,6 +903,7 @@ qboolean CheckVenomAttack( gentity_t *ent )
   if( !traceEnt->takedamage )
     return qfalse;
 
+/*
   //allow bites to work against defensive buildables only
   if( traceEnt->s.eType == ET_BUILDABLE )
   {
@@ -912,7 +913,7 @@ qboolean CheckVenomAttack( gentity_t *ent )
 
     //hackery
     damage *= 0.5f;
-  }
+  }*/
 
   if( traceEnt->client )
   {
