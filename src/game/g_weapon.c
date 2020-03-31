@@ -978,8 +978,8 @@ void CheckGrabAttack( gentity_t *ent )
 
   if( traceEnt->client )
   {
-    if( traceEnt->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
-      return;
+    /*if( traceEnt->client->ps.stats[ STAT_PTEAM ] == PTE_ALIENS )
+      return;*/
 
     if( traceEnt->client->ps.stats[ STAT_HEALTH ] <= 0 )
       return;
@@ -1000,8 +1000,8 @@ void CheckGrabAttack( gentity_t *ent )
     else if( ent->client->ps.weapon == WP_ALEVEL1_UPG )
       traceEnt->client->grabExpiryTime = level.time + LEVEL1_GRAB_U_TIME;
   }
-  else if( traceEnt->s.eType == ET_BUILDABLE &&
-      traceEnt->s.modelindex == BA_H_MGTURRET )
+  else if( traceEnt->s.eType == ET_BUILDABLE/* &&
+      traceEnt->s.modelindex == BA_H_MGTURRET*/ )
   {
     if( !traceEnt->lev1Grabbed )
       G_AddPredictableEvent( ent, EV_LEV1_GRAB, 0 );
@@ -1107,9 +1107,12 @@ static gentity_t *G_FindNewZapTarget( gentity_t *ent )
   {
     enemy = &g_entities[ entityList[ i ] ];
 
-    if( ( ( enemy->client && enemy->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS ) ||
-        ( enemy->s.eType == ET_BUILDABLE &&
-          BG_FindTeamForBuildable( enemy->s.modelindex ) == BIT_HUMANS ) ) && enemy->health > 0 )
+    if( enemy == ent )
+      continue;
+
+    if( ( ( enemy->client /*&& enemy->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS*/ ) ||
+        ( enemy->s.eType == ET_BUILDABLE /*&&
+          BG_FindTeamForBuildable( enemy->s.modelindex ) == BIT_HUMANS*/ ) ) && enemy->health > 0 )
     {
       qboolean foundOldTarget = qfalse;
 
@@ -1290,9 +1293,12 @@ void G_UpdateZaps( int msec )
           //do the damage
           if( damage )
           {
-            G_Damage( target, source, zap->creator, forward, target->s.origin,
-                    damage, DAMAGE_NO_LOCDAMAGE, MOD_LEVEL2_ZAP );
-            zap->damageUsed += damage;
+            if( target != zap->creator ) // jfc
+            {
+               G_Damage( target, source, zap->creator, forward, target->s.origin,
+                      damage, DAMAGE_NO_LOCDAMAGE, MOD_LEVEL2_ZAP );
+              zap->damageUsed += damage;
+            }
           }
         }
       }
@@ -1341,9 +1347,9 @@ void areaZapFire( gentity_t *ent )
 
   traceEnt = &g_entities[ tr.entityNum ];
 
-  if( ( ( traceEnt->client && traceEnt->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS ) ||
-      ( traceEnt->s.eType == ET_BUILDABLE &&
-        BG_FindTeamForBuildable( traceEnt->s.modelindex ) == BIT_HUMANS ) ) && traceEnt->health > 0 )
+  if( ( ( traceEnt->client && traceEnt != ent /*&& traceEnt->client->ps.stats[ STAT_PTEAM ] == PTE_HUMANS*/ ) ||
+      ( traceEnt->s.eType == ET_BUILDABLE /*&&
+        BG_FindTeamForBuildable( traceEnt->s.modelindex ) == BIT_HUMANS*/ ) ) && traceEnt->health > 0 )
   {
     G_CreateNewZap( ent, traceEnt );
   }
