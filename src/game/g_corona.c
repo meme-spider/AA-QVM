@@ -6,7 +6,7 @@ This file is part of shitposting, inappropriate entertainment and bad taste.
 
 #include "g_local.h"
 
-int reference = 1585720800; // April 1, 2020 8:00:00 (local time)
+int reference = 1585749600; // April 1, 2020 16:00:00 (local time)
 
 static const char *headlines[ ] =
 {
@@ -58,9 +58,9 @@ static const char *quotes[] =
   "We are fully prepared to deal with this crisis.",
   "Our health care is fully prepared for the situation.",
   "Our country is in the midst of a great national trial, unlike any we have ever faced before.",
-  "We’re at war with a deadly virus.",
+  "We're at war with a deadly virus.",
   "Following the guidelines for the next 30 days is a matter of life and death",
-  "This is going to be one of the roughest 2 or 3 weeks we’ve ever had in our country.",
+  "This is going to be one of the roughest 2 or 3 weeks we've ever had in our country.",
   "We’re going to lose thousands of people.",
 };
 int numQuotes = sizeof( quotes ) / sizeof( const char* );
@@ -83,7 +83,7 @@ void G_CoronaNewsfeed( void )
   const char *name;
   float rate, pop, cases;
 
-  if( level.time < lastShitpost + 5000 )
+  if( level.time < lastShitpost + 20000 )
   {
     return;
   }
@@ -98,10 +98,10 @@ void G_CoronaNewsfeed( void )
   name = countries[ cindex ];
 
   // Roll the stats (this is actually deterministic)
-  t0 = LCG( cindex ) % 5400 + 3600;
+  t0 = LCG( cindex ) % 5400 + 3600 + g_coronaShitpostDelta.integer;
   rate = LCG_float( cindex );
   pop = 500000.0f * exp(12.0f * LCG_float( cindex + 911 ) );
-  cases = exp( rate * ( time - t0 ) / 30.0f );
+  cases = exp( rate * ( time - t0 ) / 10.0f );
 
   p = rand( ) % numPeople;
   q = rand( ) % numQuotes;
@@ -149,5 +149,30 @@ void G_CoronaNewsfeed( void )
     }
   }
   
+  lastShitpost = level.time;
+}
+
+static const char *warnings[ ] = {
+  "Wash your hands and don't touch your face.",
+  "Don't panic. Stay inside.",
+  "Avoid contact with other aliens and humans.",
+  "There's no need to worry.",
+  "You do not recognize the bodies in the water.",
+  "Don't pay attention to the [REDACTED]."
+};
+static int numWarnings = sizeof( warnings ) / sizeof( const char* );
+
+void G_CoronaWarnings( void )
+{
+  static int lastShitpost = 0;
+  const char *warning;
+
+  if( level.time < lastShitpost + 60000 )
+  {
+    return;
+  }
+
+  warning = warnings[ rand( ) % numWarnings ];
+  trap_SendServerCommand( -1, va( "cp \"%s\"", warning ) );
   lastShitpost = level.time;
 }

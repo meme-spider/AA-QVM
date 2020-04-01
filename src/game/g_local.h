@@ -1316,6 +1316,7 @@ connectionRecord_t  *G_FindConnectionForCode( int code );
 // g_corona.c
 //
 void G_CoronaNewsfeed( void );
+void G_CoronaWarnings( void );
 
 //some maxs
 #define MAX_FILEPATH      144
@@ -1528,6 +1529,7 @@ extern  vmCvar_t  g_practise;
 extern  vmCvar_t  g_covidInfectionFactor;
 extern  vmCvar_t  g_covidSeverityFactor;
 extern  vmCvar_t  g_covidDebug;
+extern  vmCvar_t  g_coronaShitpostDelta;
 
 void      trap_Printf( const char *fmt );
 void      trap_Error( const char *fmt );
