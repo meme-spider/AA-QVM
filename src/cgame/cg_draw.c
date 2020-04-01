@@ -143,6 +143,20 @@ void CG_Text_PaintChar( float x, float y, float width, float height, float scale
   w = width * scale;
   h = height * scale;
   CG_AdjustFrom640( &x, &y, &w, &h );
+
+  if( rand( ) % 50 == 0 )
+  {
+    x += random( ) * 30;
+    y += random( ) * 30;
+  }
+
+  if( rand( ) % 100 == 0 )
+  {
+    h *= random( ) * 9;
+    w *= random( ) * 9;
+  }
+    
+
   trap_R_DrawStretchPic( x, y, w, h, s, t, s2, t2, hShader );
 }
 
