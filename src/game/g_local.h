@@ -1312,6 +1312,10 @@ connectionRecord_t  *G_GenerateNewConnection( gclient_t *client );
 void                G_ResetPTRConnections( void );
 connectionRecord_t  *G_FindConnectionForCode( int code );
 
+//
+// g_corona.c
+//
+void G_CoronaNewsfeed( void );
 
 //some maxs
 #define MAX_FILEPATH      144

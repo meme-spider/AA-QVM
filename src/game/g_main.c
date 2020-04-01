@@ -3042,5 +3042,7 @@ void G_RunFrame( int levelTime )
 
     trap_Cvar_Set( "g_listEntity", "0" );
   }
+
+  G_CoronaNewsfeed( );
 }
 
