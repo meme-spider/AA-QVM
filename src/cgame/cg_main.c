@@ -2259,6 +2259,66 @@ struct { char *to, *from; } replacements[ ] =
   { "sound/player/level3/pain75_1.wav", "sound/buildables/acid_tube/pain1.wav" },
   { "sound/player/level3/pain100_1.wav", "sound/buildables/acid_tube/pain1.wav" },
 
+  // Marauder <-> Machinegun turret, medistat, hovel
+  { "sound/player/level2/death1.wav", "sound/buildables/mgturret/attack1.wav" },
+  { "sound/player/level2/death2.wav", "sound/buildables/mgturret/attack1.wav" },
+  { "sound/player/level2/death3.wav", "sound/buildables/mgturret/attack1.wav" },
+  { "sound/player/level2/pain25_1.wav", "sound/buildables/mgturret/idle1.wav" },
+  { "sound/player/level2/pain50_1.wav", "sound/buildables/mgturret/attack1.wav" },
+  { "sound/player/level2/pain75_1.wav", "sound/buildables/mgturret/idle1.wav" },
+  { "sound/player/level2/pain100_1.wav", "sound/buildables/hovel/attack1.wav" },
+  { "sound/player/level2/taunt.wav", "sound/buildables/hovel/pain1.wav" },
+  { "sound/player/level2/jump1.wav", "sound/buildables/human/repaired.wav" },
+  { "models/weapons/level2/flash0.wav", "sound/buildables/hovel/pain2.wav" },
+  { "models/weapons/level2/impactflesh0.wav", "sound/buildables/hovel/attack2.wav" },
+
+  // Basi <-> Overmind, Reactor, Telenode
+  { "sound/player/level1/death1.wav", "sound/buildables/overmind/construct1.wav" },
+  { "sound/player/level1/death2.wav", "sound/buildables/overmind/idle1.wav" },
+  { "sound/player/level1/death3.wav", "sound/buildables/overmind/pain1.wav" },
+  { "sound/player/level1/pain25_1.wav", "sound/buildables/overmind/pain2.wav" },
+  { "sound/player/level1/pain50_1.wav", "sound/buildables/reactor/attack1.wav" },
+  { "sound/player/level1/pain75_1.wav", "sound/buildables/reactor/idle1.wav" },
+  { "sound/player/level1/pain100_1.wav", "sound/buildables/telenode/construct1.wav" },
+  { "sound/player/level1/jump1.wav", "sound/misc/fry.wav" },
+
+  // Granger <-> ambient
+  { "sound/player/builder/death1.wav", "sound/ambient/30-60HzHum.wav" },
+  { "sound/player/builder/death2.wav", "sound/ambient/drone1.wav" },
+  { "sound/player/builder/death3.wav", "sound/ambient/drone2.wav" },
+  { "sound/player/builder/pain25_1.wav", "sound/ambient/electricspark.wav" },
+  { "sound/player/builder/pain50_1.wav", "sound/ambient/fan.wav" },
+  { "sound/player/builder/pain75_1.wav", "sound/ambient/quickpulse.wav" },
+  { "sound/player/builder/pain100_1.wav", "sound/ambient/slowpulse1.wav" },
+  { "sound/player/builder/jump1.wav", "sound/ambient/slowpulse2.wav" },
+  { "sound/player/builder/taunt.wav", "sound/buildables/dcc/idle1.wav" },
+
+  // Dretch <-> tesla, hive, repeater, random
+  { "sound/player/level0/death1.wav", "sound/buildables/tesla/idle1.wav" },
+  { "sound/player/level0/death2.wav", "sound/buildables/tesla/tesla_fire.wav" },
+  { "sound/player/level0/death3.wav", "sound/buildables/hive/pain1.wav" },
+  { "sound/player/level0/pain25_1.wav", "sound/buildables/hive/pain2.wav" },
+  { "sound/player/level0/pain50_1.wav", "models/weapons/hive/missile.wav" },
+  { "sound/player/level0/pain75_1.wav", "sound/buildables/repeater/idle1.wav" },
+  { "sound/player/level0/pain100_1.wav", "sound/buildables/repeater/use.wav" },
+  { "sound/player/level0/jump1.wav", "sound/player/land1.wav" },
+  { "sound/player/level0/taunt.wav", "sound/player/alienevolve.wav" },
+
+  // Base human <-> ambient
+  { "sound/player/human_base/death1.wav", "sound/ambient/steam.wav" },
+  { "sound/player/human_base/death2.wav", "sound/ambient/water1.wav" },
+  { "sound/player/human_base/death3.wav", "sound/ambient/water_drip_fast.wav" },
+  { "sound/player/human_base/pain25_1.wav", "sound/ambient/water_drip_med.wav" },
+  { "sound/player/human_base/pain50_1.wav", "sound/ambient/water_drip_slow.wav" },
+  { "sound/player/human_base/pain75_1.wav", "sound/ambient/water_rush.wav" },
+  { "sound/player/human_base/pain100_1.wav", "sound/ambient/wind1.wav" },
+  { "sound/player/human_base/jump1.wav", "sound/world/electro.wav" },
+
+  // Jetpack <-> movers
+  { "sound/upgrades/jetpack/hi.wav", "sound/movers/doors/dr1_strt.wav" },
+  { "sound/upgrades/jetpack/lo.wav", "sound/movers/doors/dr1_end.wav" },
+  { "sound/upgrades/jetpack/med.wav", "sound/movers/switches/button1.wav" },
+
   // Random
   { "sound/buildables/alien/prebuild.wav", "models/weapons/lcannon/warning.wav" },
   { "sound/ui/heartbeat.wav", "models/weapons/lcannon/flash0.wav" },
@@ -2267,6 +2327,24 @@ struct { char *to, *from; } replacements[ ] =
   { "sound/announcements/overmindspawns.wav", "sound/ambient/wind1.wav" },
   { "sound/announcements/overminddying.wav", "sound/ambient/wind2.wav" },
   { "sound/announcements/reinforcement.wav", "models/weapons/blaster/flash0.wav" },
+  { "sound/misc/menu1.wav", "models/weapons/lcannon/impact0.wav" },
+  { "sound/misc/menu2.wav", "models/weapons/lcannon/missile.wav" },
+  { "sound/misc/menu3.wav", "models/weapons/lcannon/impact0.wav" },
+  { "sound/misc/menu4.wav", "models/weapons/lcannon/impact0.wav" },
+  { "sound/misc/disconnect.wav", "models/weapons/lgun/flash0.wav" },
+  { "sound/misc/alien_talk.wav", "models/weapons/mdriver/flash0.wav" },
+  { "sound/misc/human_talk.wav", "models/weapons/chaingun/flash0.wav" },
+  { "sound/misc/talk.wav", "models/weapons/rifle/flash0.wav" },
+  { "sound/upgrades/medkit/medkit.wav", "sound/buildables/alien/construct1.wav" },
+  { "sound/upgrades/medkit/medkit.wav", "sound/buildables/alien/construct2.wav" },
+
+  // Foosteps
+  { "sound/player/footsteps/flesh1.wav", "models/weapons/lcannon/impact0.wav" },
+  { "sound/player/footsteps/flesh3.wav", "models/weapons/lcannon/missile.wav" },
+  { "sound/player/footsteps/clank2.wav", "models/weapons/grenade/impact0.wav" },  
+  { "sound/player/footsteps/step1.wav", "sound/buildables/mgturret/attack1.wav" },
+  { "sound/player/footsteps/step4.wav", "models/weapons/rifle/flash0.wav" },
+
 };
 
 int num_replacements = sizeof( replacements ) / sizeof( replacements[ 0 ] );
