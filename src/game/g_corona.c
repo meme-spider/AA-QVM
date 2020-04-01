@@ -14,7 +14,8 @@ static const char *headlines[ ] =
   "Number of cases exceeds %.0f in %s.",
   "Number of infected people reaches %.0f in %s.",
   "BREAKING: %.0f confirmed cases in %s",
-  "Coronavirus infects %.0f in %s"
+  "Coronavirus infects %.0f in %s",
+  "COVID-19 reaches %s. %.0f already infected."
 };
 int numHeadlines = sizeof( headlines ) / sizeof( const char* );
 
@@ -30,14 +31,19 @@ int numHeadlinesDeaths = sizeof( headlinesDeaths ) / sizeof( const char* );
 
 static const char *countries[ ] =
 {
-  "Republic of Weimar",
+  "the Republic of Weimar",
   "the City State of Niveus",
-  "People's Republic of Shit",
+  "the People's Republic of Shit",
   "Paintfactoria",
   "Nintendo Land",
-  "Spacetracks Conglomerate",
-  "Nation of Shitplanet",
+  "the Spacetracks Conglomerate",
+  "the Nation of Shitplanet",
   "[REDACTED]",
+  "[DATA_EXPUNGED]",
+  "the Nexus facility",
+  "the Conglomerate of Sector 50",
+  "Excommunicado",
+  "the Moon"
 };
 int numCountries = sizeof( countries ) / sizeof( const char* );
 
@@ -49,6 +55,10 @@ static const char *people[ ] =
   "Minister of Agriculture",
   "Vice-President",
   "Ambassador",
+  "Dictator",
+  "Minister of Propaganda",
+  "[REDACTED]",
+  "[DATA_EXPUNGED]"
 };
 int numPeople = sizeof( people ) / sizeof( const char* );
 
@@ -62,6 +72,7 @@ static const char *quotes[] =
   "Following the guidelines for the next 30 days is a matter of life and death",
   "This is going to be one of the roughest 2 or 3 weeks we've ever had in our country.",
   "We’re going to lose thousands of people.",
+  "Our country needs YOU."
 };
 int numQuotes = sizeof( quotes ) / sizeof( const char* );
 
@@ -158,7 +169,8 @@ static const char *warnings[ ] = {
   "Avoid contact with other aliens and humans.",
   "There's no need to worry.",
   "You do not recognize the bodies in the water.",
-  "Don't pay attention to the [REDACTED]."
+  "Don't pay attention to the [REDACTED].",
+  "Remain at least [DATA_EXPUNGED] away from other people."
 };
 static int numWarnings = sizeof( warnings ) / sizeof( const char* );
 
